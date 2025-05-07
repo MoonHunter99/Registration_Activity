@@ -10,14 +10,25 @@
     <div class="container" id="registration-form">
         <h1>Register</h1>
         <form action="register.php" method="POST">
-            <input type="text" name="username" placeholder="Username" required>
-            <input type="text" name="fname" placeholder="First Name" required>
-            <input type="text" name="lname" placeholder="Last Name" required>
-            <input type="text" name="mname" placeholder="Middle Name" required>
-            <input type="text" name="suffix" placeholder="Suffix (e.g., Jr., Sr.)">
-            <input type="text" name="phone" placeholder="Phone Number" required>
-            <input type="email" name="email" placeholder="Email" required>
-            <input type="password" name="password" placeholder="Password" required>
+            <label for="username">Username</label>
+                <input type="text" name="username" placeholder="Username" required>
+            <label for="fname">First Name</label>
+                <input type="text" name="fname" placeholder="First Name" required>
+            <label for="lname">Last Name</label>
+                <input type="text" name="lname" placeholder="Last Name" required>
+            <label for="mname">Middle Name</label>
+                <input type="text" name="mname" placeholder="Middle Name" required>
+            <label for="suffix">Suffix</label>
+                <input type="text" name="suffix" placeholder="Suffix (e.g., Jr., Sr.)">
+            <label for="phone">Phone Number</label>
+                <input type="text" name="phone" placeholder="Phone Number" required>
+            <label for="email">Email</label>
+                <input type="email" name="email" placeholder="Email" required>
+            <label for="password">Password</label>
+                <input type="password" name="password" placeholder="Password" required>
+            <label for="confirm_password">Confirm Password</label>
+                <input type="password" name="confirm_password" placeholder="Confirm Password" required>
+            <label for="address">Address</label>
             <button type="submit">Register</button>
         </form>
         <p>Already have an account? <a href="#" id="toggle-form">Login here</a></p>
