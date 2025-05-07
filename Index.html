@@ -10,6 +10,7 @@
     <div class="container" id="registration-form">
         <h1>Register</h1>
         <form action="register.php" method="POST">
+            <fieldset>
             <label for="username">Username</label>
                 <input type="text" name="username" placeholder="Username" required>
             <label for="fname">First Name</label>
@@ -28,11 +29,31 @@
                 <input type="password" name="password" placeholder="Password" required>
             <label for="confirm_password">Confirm Password</label>
                 <input type="password" name="confirm_password" placeholder="Confirm Password" required>
+            </fieldset> 
             <label for="address">Address</label>
+            <fieldset>
+                <label for="region" >Region</label>
+                    <select name="region" id="region" required>
+                        <option value="">-- Select Region --</option>
+                    </select> 
+                <label for="province">Province</label>
+                    <select name="province" id="province" required>
+                        <option value="">-- Select Province --</option>
+                    </select> 
+                <label for="municipality">Municipality</label>
+                    <select name="municipality" id="municipality" required>
+                        <option value="">-- Select Municipality --</option>
+                    </select> 
+                <label for="barangay">Barangay</label>
+                    <select name="barangay" id="municipality" required>
+                        <option value="" >-- Select Barangay --</option>
+                    </select> 
+            </fieldset>
             <button type="submit">Register</button>
         </form>
         <p>Already have an account? <a href="#" id="toggle-form">Login here</a></p>
 
     </div>
+    <script src="script.js"></script>   
 </body>
 </html>
