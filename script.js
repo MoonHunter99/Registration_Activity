@@ -197,7 +197,7 @@ var locationData =  {
 
 
 window.onload = function() {
-    const selectRegion = doccument.getElementById("region"),
+    const selectRegion = document.getElementById("region"),
         selectProvince = document.getElementById("province"),
         selectMunicipality = document.getElementById("municipality"),
         selectBarangay = document.getElementById("barangay")
@@ -206,6 +206,7 @@ window.onload = function() {
         selectMunicipality.disabled = true;
         selectBarangay.disabled = true;
 
+        const selects = [selectRegion, selectProvince, selectMunicipality, selectBarangay];
         selects.forEach(select => {
             if (select.disabled == true){
                 select.style.cursor = "auto"
@@ -218,4 +219,67 @@ window.onload = function() {
         for(let region in locationData){
             selectRegion.options[selectRegion.options.length] = new Option(region, region);
         }
+
+        selectRegion.onchange = (e) => {
+            selectProvince.disabled = false
+            selectMunicipality.disabled = true
+            selectBarangay.disabled = true  
+
+            selects.forEach(select => {
+                if (select.disabled == true){
+                    select.style.cursor = "auto"
+                }
+                else {
+                    select.style.cursor = "pointer"
+                }
+            })
+            selectProvince.length = 1; // remove all options bar first
+            selectMunicipality.length = 1; // remove all options bar first  
+            selectBarangay.length = 1; // remove all options bar first
+
+            for (let province in locationData[e.target.value]) {
+                selectProvince.options[selectProvince.options.length] = new Option(province, province);
+            }
+        } 
+
+        selectProvince.onchange = (e) => {
+            selectMunicipality.disabled = false
+            selectBarangay.disabled = true  
+
+            selects.forEach(select => {
+                if (select.disabled == true){
+                    select.style.cursor = "auto"
+                }
+                else {
+                    select.style.cursor = "pointer"
+                }
+            })
+            selectMunicipality.length = 1; // remove all options bar first
+            selectBarangay.length = 1;      // remove all options bar first
+
+            for(let municipality in locationData[selectRegion.value][e.target.value]) {
+                selectMunicipality.options[selectMunicipality.options.length] = new Option(municipality, municipality);
+            }   
+        }
+
+        selectMunicipality.onchange = (e) => {
+            selectBarangay.disabled = false  
+
+            selects.forEach(select => {
+                if (select.disabled == true){
+                    select.style.cursor = "auto"
+                }
+                else {
+                    select.style.cursor = "pointer"
+                }
+            })
+            selectBarangay.length = 1; // remove all options bar first
+
+            for(let barangay of locationData[selectRegion.value][selectProvince.value][e.target.value]) {
+                selectBarangay.options[selectBarangay.options.length] = new Option(barangay, barangay);
+            }
+        }
+
 }
+
+
