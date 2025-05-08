@@ -196,434 +196,443 @@ var locationData =  {
 };
 
 
-window.onload = function() {
-    const selectRegion = document.getElementById("region"),
-        selectProvince = document.getElementById("province"),
-        selectMunicipality = document.getElementById("municipality"),
-        selectBarangay = document.getElementById("barangay")
-        
-        selectProvince.disabled = true;
-        selectMunicipality.disabled = true;
-        selectBarangay.disabled = true;
-
-        const selects = [selectRegion, selectProvince, selectMunicipality, selectBarangay];
-        selects.forEach(select => {
-            if (select.disabled == true){
-                select.style.cursor = "auto"
-            }
-            else {
-                select.style.cursor = "pointer"
-            }
-        })
-
-        for(let region in locationData){
-            selectRegion.options[selectRegion.options.length] = new Option(region, region);
-        }
-
-        selectRegion.onchange = (e) => {
-            selectProvince.disabled = false
-            selectMunicipality.disabled = true
-            selectBarangay.disabled = true  
-
-            selects.forEach(select => {
-                if (select.disabled == true){
-                    select.style.cursor = "auto"
-                }
-                else {
-                    select.style.cursor = "pointer"
-                }
-            })
-            selectProvince.length = 1; // remove all options bar first
-            selectMunicipality.length = 1; // remove all options bar first  
-            selectBarangay.length = 1; // remove all options bar first
-
-            for (let province in locationData[e.target.value]) {
-                selectProvince.options[selectProvince.options.length] = new Option(province, province);
-            }
-        } 
-
-        selectProvince.onchange = (e) => {
-            selectMunicipality.disabled = false
-            selectBarangay.disabled = true  
-
-            selects.forEach(select => {
-                if (select.disabled == true){
-                    select.style.cursor = "auto"
-                }
-                else {
-                    select.style.cursor = "pointer"
-                }
-            })
-            selectMunicipality.length = 1; // remove all options bar first
-            selectBarangay.length = 1;      // remove all options bar first
-
-            for(let municipality in locationData[selectRegion.value][e.target.value]) {
-                selectMunicipality.options[selectMunicipality.options.length] = new Option(municipality, municipality);
-            }   
-        }
-
-        selectMunicipality.onchange = (e) => {
-            selectBarangay.disabled = false  
-
-            selects.forEach(select => {
-                if (select.disabled == true){
-                    select.style.cursor = "auto"
-                }
-                else {
-                    select.style.cursor = "pointer"
-                }
-            })
-            selectBarangay.length = 1; // remove all options bar first
-
-            for(let barangay of locationData[selectRegion.value][selectProvince.value][e.target.value]) {
-                selectBarangay.options[selectBarangay.options.length] = new Option(barangay, barangay);
-            }
-        }
-}
-
 // Wait for DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', function() {
-    // Add asterisks to required field labels
-    const addRequiredAsterisks = () => {
-      const requiredInputs = document.querySelectorAll('input[required], select[required]');
+  // Location data handling (kept from original code)
+  window.onload = function() {
+      if (typeof locationData !== 'undefined') {
+          const selectRegion = document.getElementById("region"),
+              selectProvince = document.getElementById("province"),
+              selectMunicipality = document.getElementById("municipality"),
+              selectBarangay = document.getElementById("barangay");
+              
+          selectProvince.disabled = true;
+          selectMunicipality.disabled = true;
+          selectBarangay.disabled = true;
+
+          const selects = [selectRegion, selectProvince, selectMunicipality, selectBarangay];
+          selects.forEach(select => {
+              if (select.disabled == true){
+                  select.style.cursor = "auto";
+              }
+              else {
+                  select.style.cursor = "pointer";
+              }
+          });
+
+          if (locationData) {
+              for(let region in locationData){
+                  selectRegion.options[selectRegion.options.length] = new Option(region, region);
+              }
+
+              selectRegion.onchange = (e) => {
+                  selectProvince.disabled = false;
+                  selectMunicipality.disabled = true;
+                  selectBarangay.disabled = true;  
+
+                  selects.forEach(select => {
+                      if (select.disabled == true){
+                          select.style.cursor = "auto";
+                      }
+                      else {
+                          select.style.cursor = "pointer";
+                      }
+                  });
+                  selectProvince.length = 1; // remove all options bar first
+                  selectMunicipality.length = 1; // remove all options bar first  
+                  selectBarangay.length = 1; // remove all options bar first
+
+                  for (let province in locationData[e.target.value]) {
+                      selectProvince.options[selectProvince.options.length] = new Option(province, province);
+                  }
+              };
+
+              selectProvince.onchange = (e) => {
+                  selectMunicipality.disabled = false;
+                  selectBarangay.disabled = true;  
+
+                  selects.forEach(select => {
+                      if (select.disabled == true){
+                          select.style.cursor = "auto";
+                      }
+                      else {
+                          select.style.cursor = "pointer";
+                      }
+                  });
+                  selectMunicipality.length = 1; // remove all options bar first
+                  selectBarangay.length = 1;      // remove all options bar first
+
+                  for(let municipality in locationData[selectRegion.value][e.target.value]) {
+                      selectMunicipality.options[selectMunicipality.options.length] = new Option(municipality, municipality);
+                  }   
+              };
+
+              selectMunicipality.onchange = (e) => {
+                  selectBarangay.disabled = false;  
+
+                  selects.forEach(select => {
+                      if (select.disabled == true){
+                          select.style.cursor = "auto";
+                      }
+                      else {
+                          select.style.cursor = "pointer";
+                      }
+                  });
+                  selectBarangay.length = 1; // remove all options bar first
+
+                  for(let barangay of locationData[selectRegion.value][selectProvince.value][e.target.value]) {
+                      selectBarangay.options[selectBarangay.options.length] = new Option(barangay, barangay);
+                  }
+              };
+          }
+      }
+  };
+
+  
+  // Add asterisks to required field labels
+  const addRequiredAsterisks = () => {
+    const requiredInputs = document.querySelectorAll('input[required], select[required]');
+    
+    requiredInputs.forEach(input => {
+      // Find the associated label
+      const inputId = input.id || input.name;
+      const label = document.querySelector(`label[for="${inputId}"]`) || 
+                    input.previousElementSibling;
       
-      requiredInputs.forEach(input => {
-        // Find the associated label
-        const inputId = input.id || input.name;
-        const label = document.querySelector(`label[for="${inputId}"]`) || 
-                      input.previousElementSibling;
-        
-        if (label && label.tagName === 'LABEL' && !label.querySelector('.required-asterisk')) {
-          const asterisk = document.createElement('span');
-          asterisk.className = 'required-asterisk';
-          asterisk.textContent = ' *';
-          label.appendChild(asterisk);
-        }
+      if (label && label.tagName === 'LABEL' && !label.querySelector('.required-asterisk')) {
+        const asterisk = document.createElement('span');
+        asterisk.className = 'required-asterisk';
+        asterisk.textContent = ' *';
+        label.appendChild(asterisk);
+      }
+    });
+  };
+
+  // Initialize required asterisks
+  addRequiredAsterisks();
+  
+  // Form navigation elements
+  const loginForm = document.getElementById('login-form');
+  const registrationForm = document.getElementById('registration-form');
+  const forgotPasswordForm = document.getElementById('forgot-password-form');
+  
+  // Navigation buttons/links
+  const showRegisterLink = document.getElementById('show-register');
+  const showLoginLink = document.getElementById('show-login');
+  const forgotPasswordLink = document.getElementById('forgot-password');
+  const backToLoginBtn = document.getElementById('back-to-login');
+  
+  // Function to show a specific form and hide others
+  function showForm(formToShow) {
+    // Hide all forms first
+    loginForm.classList.add('hidden');
+    registrationForm.classList.add('hidden');
+    forgotPasswordForm.classList.add('hidden');
+    
+    // Show the requested form
+    formToShow.classList.remove('hidden');
+  }
+  
+  // Event listeners for navigation
+  if (showRegisterLink) {
+      showRegisterLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        showForm(registrationForm);
       });
-    };
-    
-    // Form navigation elements
-    const form = document.getElementById('multi-step-form');
-    const steps = Array.from(form.querySelectorAll('.form-step'));
-    const nextButtons = form.querySelectorAll('.next-btn');
-    const prevButtons = form.querySelectorAll('.prev-btn');
-    const progressDots = document.querySelectorAll('.progress-dot');
-    
-    // Password visibility toggle functionality 
-    const addPasswordToggles = () => {
+  }
+  
+  if (showLoginLink) {
+      showLoginLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        showForm(loginForm);
+      });
+  }
+  
+  if (forgotPasswordLink) {
+      forgotPasswordLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        showForm(forgotPasswordForm);
+      });
+  }
+  
+  if (backToLoginBtn) {
+      backToLoginBtn.addEventListener('click', function() {
+        showForm(loginForm);
+      });
+  }
+  
+  // Multi-step form navigation for registration
+  const registrationFormElement = document.getElementById('multi-step-form');
+  if (registrationFormElement) {
+      const formSteps = registrationFormElement.querySelectorAll('.form-step');
+      const nextButtons = registrationFormElement.querySelectorAll('.next-btn');
+      const prevButtons = registrationFormElement.querySelectorAll('.prev-btn');
+      const progressDots = document.querySelectorAll('.progress-dot');
+      
+      // Function to show error message for an input
+      const showErrorMessage = (input, message) => {
+          // Remove any existing error messages
+          const existingError = input.parentNode.querySelector('.error-message');
+          if (existingError) {
+              existingError.remove();
+          }
+          
+          // Add the error class
+          input.classList.add('error');
+          
+          // Create and add error message
+          const errorMsg = document.createElement('div');
+          errorMsg.className = 'error-message';
+          errorMsg.textContent = message;
+          
+          // Insert after the input (or its wrapper)
+          const targetParent = input.closest('.password-wrapper') || input.parentNode;
+          targetParent.appendChild(errorMsg);
+      };
+      
+      // Function to remove error message
+      const removeErrorMessage = (input) => {
+          input.classList.remove('error');
+          const targetParent = input.closest('.password-wrapper') || input.parentNode;
+          const errorMsg = targetParent.querySelector('.error-message');
+          if (errorMsg) {
+              errorMsg.remove();
+          }
+      };
+      
+      // Advanced validation for all required fields
+      const validateRequiredField = (input) => {
+          if (!input.value.trim()) {
+              showErrorMessage(input, 'This field is required');
+              return false;
+          } else {
+              removeErrorMessage(input);
+              return true;
+          }
+      };
+      
+      // Validate email format
+      const validateEmail = (input) => {
+          if (!input.value.trim()) {
+              showErrorMessage(input, 'Email is required');
+              return false;
+          }
+          
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailRegex.test(input.value.trim())) {
+              showErrorMessage(input, 'Please enter a valid email address');
+              return false;
+          }
+          
+          removeErrorMessage(input);
+          return true;
+      };
+      
+      // Validate password matching
+      const validatePasswordMatch = (passwordInput, confirmInput) => {
+          if (passwordInput.value !== confirmInput.value) {
+              showErrorMessage(confirmInput, 'Passwords do not match');
+              return false;
+          }
+          
+          removeErrorMessage(confirmInput);
+          return true;
+      };
+      
+      // Validate password strength
+      const validatePasswordStrength = (input) => {
+          const password = input.value;
+          if (password.length < 8) {
+              showErrorMessage(input, 'Password must be at least 8 characters long');
+              return false;
+          }
+          
+          removeErrorMessage(input);
+          return true;
+      };
+      
+      // Real-time validation for password matching
+      const passwordInput = document.getElementById('password');
+      const confirmPasswordInput = document.getElementById('confirm_password');
+      
+      if (passwordInput && confirmPasswordInput) {
+          // Validate on input change
+          confirmPasswordInput.addEventListener('input', function() {
+              if (passwordInput.value && confirmPasswordInput.value) {
+                  validatePasswordMatch(passwordInput, confirmPasswordInput);
+              }
+          });
+          
+          // Also validate the original password when it changes
+          passwordInput.addEventListener('input', function() {
+              if (passwordInput.value && confirmPasswordInput.value) {
+                  validatePasswordMatch(passwordInput, confirmPasswordInput);
+              }
+              validatePasswordStrength(passwordInput);
+          });
+      }
+      
+      // Validate all inputs in a step
+      const validateStep = (stepElement) => {
+          const requiredInputs = stepElement.querySelectorAll('input[required], select[required]');
+          let isValid = true;
+          
+          // Clear all previous error messages first
+          const errorMessages = stepElement.querySelectorAll('.error-message');
+          errorMessages.forEach(msg => msg.remove());
+          
+          // Validate each required field
+          requiredInputs.forEach(input => {
+              // Special validation for different input types
+              if (input.type === 'email') {
+                  if (!validateEmail(input)) isValid = false;
+              } 
+              else if (input.name === 'password') {
+                  if (!validateRequiredField(input)) isValid = false;
+                  if (!validatePasswordStrength(input)) isValid = false;
+              }
+              else if (input.name === 'confirm_password') {
+                  if (!validateRequiredField(input)) isValid = false;
+                  if (passwordInput && !validatePasswordMatch(passwordInput, input)) isValid = false;
+              }
+              else {
+                  if (!validateRequiredField(input)) isValid = false;
+              }
+          });
+          
+          return isValid;
+      };
+      
+      // Progress through form steps
+      nextButtons.forEach(button => {
+          button.addEventListener('click', function() {
+              // Find the current active step
+              const currentStep = document.querySelector('.form-step.active');
+              const currentStepIndex = Array.from(formSteps).indexOf(currentStep);
+              
+              // Validate the current step
+              if (validateStep(currentStep)) {
+                  // Move to next step if validation passes
+                  if (currentStepIndex < formSteps.length - 1) {
+                      currentStep.classList.remove('active');
+                      formSteps[currentStepIndex + 1].classList.add('active');
+                      
+                      // Update progress indicator
+                      progressDots[currentStepIndex].classList.remove('active');
+                      progressDots[currentStepIndex + 1].classList.add('active');
+                  }
+              }
+          });
+      });
+      
+      // Go back to previous step
+      prevButtons.forEach(button => {
+          button.addEventListener('click', function() {
+              const currentStep = document.querySelector('.form-step.active');
+              const currentStepIndex = Array.from(formSteps).indexOf(currentStep);
+              
+              if (currentStepIndex > 0) {
+                  currentStep.classList.remove('active');
+                  formSteps[currentStepIndex - 1].classList.add('active');
+                  
+                  // Update progress indicator
+                  progressDots[currentStepIndex].classList.remove('active');
+                  progressDots[currentStepIndex - 1].classList.add('active');
+              }
+          });
+      });
+      
+      // Final form submission validation
+      registrationFormElement.addEventListener('submit', function(e) {
+          e.preventDefault();
+          
+          // Get the final step and validate it
+          const finalStep = formSteps[formSteps.length - 1];
+          
+          if (validateStep(finalStep)) {
+              console.log('Registration form submitted successfully!');
+              // In a real application, you would submit the form to the server here
+              alert('Account created successfully!');
+              
+              // Optional: Redirect or show success message
+              // window.location.href = "success.html";
+          }
+      });
+  }
+  
+  // Add password visibility toggle
+  const addPasswordToggles = () => {
       const passwordFields = document.querySelectorAll('input[type="password"]');
       
       passwordFields.forEach(field => {
-        // Create wrapper for input field and toggle button
-        const wrapper = document.createElement('div');
-        wrapper.className = 'password-wrapper';
-        
-        // Position the field in the wrapper
-        field.parentNode.insertBefore(wrapper, field);
-        wrapper.appendChild(field);
-        
-        // Create toggle button
-        const toggleButton = document.createElement('button');
-        toggleButton.type = 'button';
-        toggleButton.className = 'password-toggle';
-        toggleButton.innerHTML = '<span class="eye-icon eye-closed"></span>';
-        toggleButton.setAttribute('aria-label', 'Show password');
-        wrapper.appendChild(toggleButton);
-        
-        // Add click event to toggle button
-        toggleButton.addEventListener('click', function(e) {
+          // Check if the field already has a password wrapper
+          const existingWrapper = field.closest('.password-wrapper');
+          if (!existingWrapper) {
+              // Create wrapper for input field and toggle button if it doesn't exist
+              const wrapper = document.createElement('div');
+              wrapper.className = 'password-wrapper';
+              
+              // Position the field in the wrapper
+              field.parentNode.insertBefore(wrapper, field);
+              wrapper.appendChild(field);
+          }
+          
+          const passwordWrapper = field.closest('.password-wrapper');
+          
+          // Check if toggle button already exists
+          const existingToggle = passwordWrapper.querySelector('.password-toggle');
+          if (existingToggle) return;
+          
+          // Create toggle button
+          const toggleButton = document.createElement('button');
+          toggleButton.type = 'button';
+          toggleButton.className = 'password-toggle';
+          toggleButton.innerHTML = '<span class="eye-icon eye-closed"></span>';
+          toggleButton.setAttribute('aria-label', 'Show password');
+          passwordWrapper.appendChild(toggleButton);
+          
+          // Add toggle functionality
+          toggleButton.addEventListener('click', function(e) {
+              e.preventDefault();
+              if (field.type === 'password') {
+                  field.type = 'text';
+                  this.classList.add('visible');
+                  this.querySelector('.eye-icon').classList.remove('eye-closed');
+                  this.querySelector('.eye-icon').classList.add('eye-open');
+                  this.setAttribute('aria-label', 'Hide password');
+              } else {
+                  field.type = 'password';
+                  this.classList.remove('visible');
+                  this.querySelector('.eye-icon').classList.remove('eye-open');
+                  this.querySelector('.eye-icon').classList.add('eye-closed');
+                  this.setAttribute('aria-label', 'Show password');
+              }
+          });
+      });
+  };
+  
+  // Initialize password toggles
+  addPasswordToggles();
+  
+  // Form submission handlers
+  const loginFormElement = document.getElementById('login-form-element');
+  const resetFormElement = document.getElementById('reset-form');
+  
+  // Login form submission
+  if (loginFormElement) {
+      loginFormElement.addEventListener('submit', function(e) {
           e.preventDefault();
-          if (field.type === 'password') {
-            field.type = 'text';
-            this.classList.add('visible');
-            this.querySelector('.eye-icon').classList.remove('eye-closed');
-            this.querySelector('.eye-icon').classList.add('eye-open');
-            this.setAttribute('aria-label', 'Hide password');
-          } else {
-            field.type = 'password';
-            this.classList.remove('visible');
-            this.querySelector('.eye-icon').classList.remove('eye-open');
-            this.querySelector('.eye-icon').classList.add('eye-closed');
-            this.setAttribute('aria-label', 'Show password');
-          }
-        });
+          console.log('Login form submitted');
+          // You would typically send this data to your server
       });
-    };
-    
-    // Form validation
-    const validateStep = (stepIndex) => {
-      const currentStep = steps[stepIndex];
-      const inputs = currentStep.querySelectorAll('input[required], select[required]');
-      let isValid = true;
-      
-      inputs.forEach(input => {
-        if (!input.value.trim()) {
-          isValid = false;
-          input.classList.add('error');
-        } else {
-          input.classList.remove('error');
-        }
+  }
+  
+  // Reset password form submission
+  if (resetFormElement) {
+      resetFormElement.addEventListener('submit', function(e) {
+          e.preventDefault();
+          console.log('Password reset form submitted');
+          // You would typically send this data to your server
       });
-      
-      // Additional validation for password match on step 1
-      if (stepIndex === 0) {
-        const password = currentStep.querySelector('input[name="password"]');
-        const confirmPassword = currentStep.querySelector('input[name="confirm_password"]');
-        
-        if (password.value !== confirmPassword.value) {
-          isValid = false;
-          confirmPassword.classList.add('error');
-          // Optional: Show error message
-          const errorMsg = document.createElement('div');
-          errorMsg.className = 'error-message';
-          errorMsg.textContent = 'Passwords do not match';
-          
-          // Remove existing error messages first
-          const existingErrors = currentStep.querySelectorAll('.error-message');
-          existingErrors.forEach(error => error.remove());
-          
-          confirmPassword.parentNode.appendChild(errorMsg);
-        }
-      }
-      
-      return isValid;
-    };
-    
-    // Navigate to next step
-    const goToNextStep = (currentStepIndex) => {
-      if (validateStep(currentStepIndex)) {
-        steps[currentStepIndex].classList.remove('active');
-        steps[currentStepIndex + 1].classList.add('active');
-        
-        // Update progress indicator
-        progressDots[currentStepIndex].classList.remove('active');
-        progressDots[currentStepIndex + 1].classList.add('active');
-      }
-    };
-    
-    // Navigate to previous step
-    const goToPrevStep = (currentStepIndex) => {
-      steps[currentStepIndex].classList.remove('active');
-      steps[currentStepIndex - 1].classList.add('active');
-      
-      // Update progress indicator
-      progressDots[currentStepIndex].classList.remove('active');
-      progressDots[currentStepIndex - 1].classList.add('active');
-    };
-    
-    // Setup next button click handlers
-    nextButtons.forEach((button, index) => {
-      button.addEventListener('click', () => {
-        goToNextStep(index);
-      });
-    });
-    
-    // Setup previous button click handlers
-    prevButtons.forEach((button, index) => {
-      button.addEventListener('click', () => {
-        // The actual step index for prev buttons is +1 because they're in steps 2 and 3
-        goToPrevStep(index + 1);
-      });
-    });
-    
-    // Add toggle password functionality
-    addPasswordToggles();
-    
-    // Add required field asterisks
-    addRequiredAsterisks();
-    
-    // Form toggle (sign in / register)
-    const toggleForm = document.getElementById('toggle-form');
-    if (toggleForm) {
-      toggleForm.addEventListener('click', function(e) {
-        e.preventDefault();
-        const container = document.querySelector('.container');
-        const h1 = container.querySelector('h1');
-        
-        if (h1.textContent === 'Create Your Account') {
-          h1.textContent = 'Sign In';
-          this.textContent = 'Create account';
-          // Create and show login form
-          // This is a placeholder for additional functionality
-        } else {
-          h1.textContent = 'Create Your Account';
-          this.textContent = 'Sign in';
-          // Show registration form
-          // This is a placeholder for additional functionality
-        }
-      });
-    }
-    
-    // Handle form submission
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-      
-      // Validate final step
-      if (!validateStep(steps.length - 1)) {
-        return;
-      }
-      
-      // Here you would normally submit the form or handle AJAX submission
-      console.log('Form submitted successfully!');
-      
-      // You can add a success message or redirect here
-      alert('Account created successfully!');
-    });
-  });
-
-  document.addEventListener('DOMContentLoaded', function() {
-    // Form navigation elements
-    const loginForm = document.getElementById('login-form');
-    const registrationForm = document.getElementById('registration-form');
-    const forgotPasswordForm = document.getElementById('forgot-password-form');
-    
-    // Navigation buttons/links
-    const showRegisterLink = document.getElementById('show-register');
-    const showLoginLink = document.getElementById('show-login');
-    const forgotPasswordLink = document.getElementById('forgot-password');
-    const backToLoginBtn = document.getElementById('back-to-login');
-    
-    // Function to show a specific form and hide others
-    function showForm(formToShow) {
-      // Hide all forms first
-      loginForm.classList.add('hidden');
-      registrationForm.classList.add('hidden');
-      forgotPasswordForm.classList.add('hidden');
-      
-      // Show the requested form
-      formToShow.classList.remove('hidden');
-    }
-    
-    // Event listeners for navigation
-    showRegisterLink.addEventListener('click', function(e) {
-      e.preventDefault();
-      showForm(registrationForm);
-    });
-    
-    showLoginLink.addEventListener('click', function(e) {
-      e.preventDefault();
-      showForm(loginForm);
-    });
-    
-    forgotPasswordLink.addEventListener('click', function(e) {
-      e.preventDefault();
-      showForm(forgotPasswordForm);
-    });
-    
-    backToLoginBtn.addEventListener('click', function() {
-      showForm(loginForm);
-    });
-    
-    // Multi-step form navigation for registration
-    const nextButtons = document.querySelectorAll('.next-btn');
-    const prevButtons = document.querySelectorAll('.prev-btn');
-    const formSteps = document.querySelectorAll('.form-step');
-    const progressDots = document.querySelectorAll('.progress-dot');
-    
-    // Progress through form steps
-    nextButtons.forEach(button => {
-      button.addEventListener('click', function() {
-        // Find the current active step
-        const currentStep = document.querySelector('.form-step.active');
-        const currentStepIndex = Array.from(formSteps).indexOf(currentStep);
-        
-        // Validate current step (basic validation example)
-        const inputs = currentStep.querySelectorAll('input[required]');
-        let isValid = true;
-        
-        inputs.forEach(input => {
-          if (!input.value.trim()) {
-            isValid = false;
-            input.classList.add('error');
-          } else {
-            input.classList.remove('error');
-          }
-        });
-        
-        if (!isValid) return;
-        
-        // Move to next step if validation passes
-        if (currentStepIndex < formSteps.length - 1) {
-          currentStep.classList.remove('active');
-          formSteps[currentStepIndex + 1].classList.add('active');
-          
-          // Update progress indicator
-          progressDots[currentStepIndex].classList.remove('active');
-          progressDots[currentStepIndex + 1].classList.add('active');
-        }
-      });
-    });
-    
-    // Go back to previous step
-    prevButtons.forEach(button => {
-      button.addEventListener('click', function() {
-        const currentStep = document.querySelector('.form-step.active');
-        const currentStepIndex = Array.from(formSteps).indexOf(currentStep);
-        
-        if (currentStepIndex > 0) {
-          currentStep.classList.remove('active');
-          formSteps[currentStepIndex - 1].classList.add('active');
-          
-          // Update progress indicator
-          progressDots[currentStepIndex].classList.remove('active');
-          progressDots[currentStepIndex - 1].classList.add('active');
-        }
-      });
-    });
-    
-    // Add password visibility toggle
-    const passwordFields = document.querySelectorAll('input[type="password"]');
-    
-    passwordFields.forEach(field => {
-      // Create password toggle button
-      const toggleButton = document.createElement('button');
-      toggleButton.type = 'button';
-      toggleButton.className = 'password-toggle';
-      toggleButton.innerHTML = '<span class="eye-icon eye-closed"></span>';
-      
-      // Insert toggle button after password field
-      const passwordWrapper = field.closest('.password-wrapper');
-      if (passwordWrapper) {
-        passwordWrapper.appendChild(toggleButton);
-        
-        // Add toggle functionality
-        toggleButton.addEventListener('click', function() {
-          const isVisible = field.type === 'text';
-          field.type = isVisible ? 'password' : 'text';
-          toggleButton.innerHTML = isVisible 
-            ? '<span class="eye-icon eye-closed"></span>' 
-            : '<span class="eye-icon eye-open"></span>';
-          toggleButton.classList.toggle('visible');
-        });
-      }
-    });
-    
-    // Form submission handlers
-    const loginFormElement = document.getElementById('login-form-element');
-    const registrationFormElement = document.getElementById('multi-step-form');
-    const resetFormElement = document.getElementById('reset-form');
-    
-    // Login form submission
-    loginFormElement.addEventListener('submit', function(e) {
-      e.preventDefault();
-      // Add your login form processing logic here
-      console.log('Login form submitted');
-      // You would typically send this data to your server
-    });
-    
-    // Registration form submission
-    registrationFormElement.addEventListener('submit', function(e) {
-      e.preventDefault();
-      // Add your registration form processing logic here
-      console.log('Registration form submitted');
-      // You would typically send this data to your server
-    });
-    
-    // Reset password form submission
-    resetFormElement.addEventListener('submit', function(e) {
-      e.preventDefault();
-      // Add your password reset logic here
-      console.log('Password reset form submitted');
-      // You would typically send this data to your server
-    });
-  });
+  }
+});
