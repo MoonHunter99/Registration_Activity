@@ -441,3 +441,132 @@ input.error {
 .container:not(.hidden) {
   animation: slideIn 0.4s forwards;
 }
+
+/* Enhanced validation styling */
+
+/* Error message styling */
+.error-message {
+  color: #ff3b30;
+  font-size: 12px;
+  margin-top: 2px;
+  margin-bottom: 10px;  
+  animation: fadeIn 0.3s ease-in;
+  padding-left: 2px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Input field styling when in error state */
+input.error, select.error {
+  border-color: #ff3b30 !important;
+  box-shadow: 0 0 0 1px rgba(255, 59, 48, 0.2);
+  background-color: rgba(255, 59, 48, 0.03);
+}
+
+input.error:focus, select.error:focus {
+  border-color: #ff3b30 !important;
+  box-shadow: 0 0 0 3px rgba(255, 59, 48, 0.2);
+}
+
+/* Input field styling when valid */
+input:not(.error):not(:placeholder-shown):valid {
+  border-color: #34c759;
+  background-color: rgba(52, 199, 89, 0.03);
+}
+
+/* Password strength indicator */
+.password-strength {
+  display: flex;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  height: 4px;
+}
+
+.strength-segment {
+  flex: 1;
+  height: 100%;
+  margin-right: 3px;
+  background-color: #e0e0e0;
+  border-radius: 2px;
+  transition: background-color 0.3s ease;
+}
+
+.strength-segment:last-child {
+  margin-right: 0;
+}
+
+.strength-weak .strength-segment:nth-child(1) {
+  background-color: #ff3b30;
+}
+
+.strength-medium .strength-segment:nth-child(1),
+.strength-medium .strength-segment:nth-child(2) {
+  background-color: #ff9500;
+}
+
+.strength-strong .strength-segment:nth-child(1),
+.strength-strong .strength-segment:nth-child(2),
+.strength-strong .strength-segment:nth-child(3) {
+  background-color: #34c759;
+}
+
+/* Required field indicator styling enhancement */
+.required-asterisk {
+  color: #ff3b30;
+  font-weight: normal;
+}
+
+/* Next button disabled state */
+button.next-btn:disabled {
+  background-color: #a0a0a0;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+button.next-btn:disabled:hover {
+  background-color: #a0a0a0;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* Tooltip for form fields */
+.field-tooltip {
+  position: relative;
+  display: inline-block;
+  margin-left: 5px;
+  width: 16px;
+  height: 16px;
+  background-color: #0071e3;
+  color: white;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 16px;
+  font-size: 12px;
+  cursor: help;
+}
+
+.field-tooltip:before {
+  content: "i";
+  font-style: italic;
+  font-weight: bold;
+}
+
+.field-tooltip:hover:after {
+  content: attr(data-tooltip);
+  position: absolute;
+  background-color: #333;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 6px;
+  z-index: 10;
+  width: 200px;
+  left: -92px;
+  top: 25px;
+  font-size: 12px;
+  line-height: 1.4;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
