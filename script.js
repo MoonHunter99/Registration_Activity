@@ -470,3 +470,160 @@ document.addEventListener('DOMContentLoaded', function() {
       alert('Account created successfully!');
     });
   });
+
+  document.addEventListener('DOMContentLoaded', function() {
+    // Form navigation elements
+    const loginForm = document.getElementById('login-form');
+    const registrationForm = document.getElementById('registration-form');
+    const forgotPasswordForm = document.getElementById('forgot-password-form');
+    
+    // Navigation buttons/links
+    const showRegisterLink = document.getElementById('show-register');
+    const showLoginLink = document.getElementById('show-login');
+    const forgotPasswordLink = document.getElementById('forgot-password');
+    const backToLoginBtn = document.getElementById('back-to-login');
+    
+    // Function to show a specific form and hide others
+    function showForm(formToShow) {
+      // Hide all forms first
+      loginForm.classList.add('hidden');
+      registrationForm.classList.add('hidden');
+      forgotPasswordForm.classList.add('hidden');
+      
+      // Show the requested form
+      formToShow.classList.remove('hidden');
+    }
+    
+    // Event listeners for navigation
+    showRegisterLink.addEventListener('click', function(e) {
+      e.preventDefault();
+      showForm(registrationForm);
+    });
+    
+    showLoginLink.addEventListener('click', function(e) {
+      e.preventDefault();
+      showForm(loginForm);
+    });
+    
+    forgotPasswordLink.addEventListener('click', function(e) {
+      e.preventDefault();
+      showForm(forgotPasswordForm);
+    });
+    
+    backToLoginBtn.addEventListener('click', function() {
+      showForm(loginForm);
+    });
+    
+    // Multi-step form navigation for registration
+    const nextButtons = document.querySelectorAll('.next-btn');
+    const prevButtons = document.querySelectorAll('.prev-btn');
+    const formSteps = document.querySelectorAll('.form-step');
+    const progressDots = document.querySelectorAll('.progress-dot');
+    
+    // Progress through form steps
+    nextButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        // Find the current active step
+        const currentStep = document.querySelector('.form-step.active');
+        const currentStepIndex = Array.from(formSteps).indexOf(currentStep);
+        
+        // Validate current step (basic validation example)
+        const inputs = currentStep.querySelectorAll('input[required]');
+        let isValid = true;
+        
+        inputs.forEach(input => {
+          if (!input.value.trim()) {
+            isValid = false;
+            input.classList.add('error');
+          } else {
+            input.classList.remove('error');
+          }
+        });
+        
+        if (!isValid) return;
+        
+        // Move to next step if validation passes
+        if (currentStepIndex < formSteps.length - 1) {
+          currentStep.classList.remove('active');
+          formSteps[currentStepIndex + 1].classList.add('active');
+          
+          // Update progress indicator
+          progressDots[currentStepIndex].classList.remove('active');
+          progressDots[currentStepIndex + 1].classList.add('active');
+        }
+      });
+    });
+    
+    // Go back to previous step
+    prevButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        const currentStep = document.querySelector('.form-step.active');
+        const currentStepIndex = Array.from(formSteps).indexOf(currentStep);
+        
+        if (currentStepIndex > 0) {
+          currentStep.classList.remove('active');
+          formSteps[currentStepIndex - 1].classList.add('active');
+          
+          // Update progress indicator
+          progressDots[currentStepIndex].classList.remove('active');
+          progressDots[currentStepIndex - 1].classList.add('active');
+        }
+      });
+    });
+    
+    // Add password visibility toggle
+    const passwordFields = document.querySelectorAll('input[type="password"]');
+    
+    passwordFields.forEach(field => {
+      // Create password toggle button
+      const toggleButton = document.createElement('button');
+      toggleButton.type = 'button';
+      toggleButton.className = 'password-toggle';
+      toggleButton.innerHTML = '<span class="eye-icon eye-closed"></span>';
+      
+      // Insert toggle button after password field
+      const passwordWrapper = field.closest('.password-wrapper');
+      if (passwordWrapper) {
+        passwordWrapper.appendChild(toggleButton);
+        
+        // Add toggle functionality
+        toggleButton.addEventListener('click', function() {
+          const isVisible = field.type === 'text';
+          field.type = isVisible ? 'password' : 'text';
+          toggleButton.innerHTML = isVisible 
+            ? '<span class="eye-icon eye-closed"></span>' 
+            : '<span class="eye-icon eye-open"></span>';
+          toggleButton.classList.toggle('visible');
+        });
+      }
+    });
+    
+    // Form submission handlers
+    const loginFormElement = document.getElementById('login-form-element');
+    const registrationFormElement = document.getElementById('multi-step-form');
+    const resetFormElement = document.getElementById('reset-form');
+    
+    // Login form submission
+    loginFormElement.addEventListener('submit', function(e) {
+      e.preventDefault();
+      // Add your login form processing logic here
+      console.log('Login form submitted');
+      // You would typically send this data to your server
+    });
+    
+    // Registration form submission
+    registrationFormElement.addEventListener('submit', function(e) {
+      e.preventDefault();
+      // Add your registration form processing logic here
+      console.log('Registration form submitted');
+      // You would typically send this data to your server
+    });
+    
+    // Reset password form submission
+    resetFormElement.addEventListener('submit', function(e) {
+      e.preventDefault();
+      // Add your password reset logic here
+      console.log('Password reset form submitted');
+      // You would typically send this data to your server
+    });
+  });
