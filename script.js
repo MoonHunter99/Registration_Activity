@@ -279,7 +279,194 @@ window.onload = function() {
                 selectBarangay.options[selectBarangay.options.length] = new Option(barangay, barangay);
             }
         }
-
 }
 
-
+// Wait for DOM to be fully loaded
+document.addEventListener('DOMContentLoaded', function() {
+    // Add asterisks to required field labels
+    const addRequiredAsterisks = () => {
+      const requiredInputs = document.querySelectorAll('input[required], select[required]');
+      
+      requiredInputs.forEach(input => {
+        // Find the associated label
+        const inputId = input.id || input.name;
+        const label = document.querySelector(`label[for="${inputId}"]`) || 
+                      input.previousElementSibling;
+        
+        if (label && label.tagName === 'LABEL' && !label.querySelector('.required-asterisk')) {
+          const asterisk = document.createElement('span');
+          asterisk.className = 'required-asterisk';
+          asterisk.textContent = ' *';
+          label.appendChild(asterisk);
+        }
+      });
+    };
+    
+    // Form navigation elements
+    const form = document.getElementById('multi-step-form');
+    const steps = Array.from(form.querySelectorAll('.form-step'));
+    const nextButtons = form.querySelectorAll('.next-btn');
+    const prevButtons = form.querySelectorAll('.prev-btn');
+    const progressDots = document.querySelectorAll('.progress-dot');
+    
+    // Password visibility toggle functionality 
+    const addPasswordToggles = () => {
+      const passwordFields = document.querySelectorAll('input[type="password"]');
+      
+      passwordFields.forEach(field => {
+        // Create wrapper for input field and toggle button
+        const wrapper = document.createElement('div');
+        wrapper.className = 'password-wrapper';
+        
+        // Position the field in the wrapper
+        field.parentNode.insertBefore(wrapper, field);
+        wrapper.appendChild(field);
+        
+        // Create toggle button
+        const toggleButton = document.createElement('button');
+        toggleButton.type = 'button';
+        toggleButton.className = 'password-toggle';
+        toggleButton.innerHTML = '<span class="eye-icon eye-closed"></span>';
+        toggleButton.setAttribute('aria-label', 'Show password');
+        wrapper.appendChild(toggleButton);
+        
+        // Add click event to toggle button
+        toggleButton.addEventListener('click', function(e) {
+          e.preventDefault();
+          if (field.type === 'password') {
+            field.type = 'text';
+            this.classList.add('visible');
+            this.querySelector('.eye-icon').classList.remove('eye-closed');
+            this.querySelector('.eye-icon').classList.add('eye-open');
+            this.setAttribute('aria-label', 'Hide password');
+          } else {
+            field.type = 'password';
+            this.classList.remove('visible');
+            this.querySelector('.eye-icon').classList.remove('eye-open');
+            this.querySelector('.eye-icon').classList.add('eye-closed');
+            this.setAttribute('aria-label', 'Show password');
+          }
+        });
+      });
+    };
+    
+    // Form validation
+    const validateStep = (stepIndex) => {
+      const currentStep = steps[stepIndex];
+      const inputs = currentStep.querySelectorAll('input[required], select[required]');
+      let isValid = true;
+      
+      inputs.forEach(input => {
+        if (!input.value.trim()) {
+          isValid = false;
+          input.classList.add('error');
+        } else {
+          input.classList.remove('error');
+        }
+      });
+      
+      // Additional validation for password match on step 1
+      if (stepIndex === 0) {
+        const password = currentStep.querySelector('input[name="password"]');
+        const confirmPassword = currentStep.querySelector('input[name="confirm_password"]');
+        
+        if (password.value !== confirmPassword.value) {
+          isValid = false;
+          confirmPassword.classList.add('error');
+          // Optional: Show error message
+          const errorMsg = document.createElement('div');
+          errorMsg.className = 'error-message';
+          errorMsg.textContent = 'Passwords do not match';
+          
+          // Remove existing error messages first
+          const existingErrors = currentStep.querySelectorAll('.error-message');
+          existingErrors.forEach(error => error.remove());
+          
+          confirmPassword.parentNode.appendChild(errorMsg);
+        }
+      }
+      
+      return isValid;
+    };
+    
+    // Navigate to next step
+    const goToNextStep = (currentStepIndex) => {
+      if (validateStep(currentStepIndex)) {
+        steps[currentStepIndex].classList.remove('active');
+        steps[currentStepIndex + 1].classList.add('active');
+        
+        // Update progress indicator
+        progressDots[currentStepIndex].classList.remove('active');
+        progressDots[currentStepIndex + 1].classList.add('active');
+      }
+    };
+    
+    // Navigate to previous step
+    const goToPrevStep = (currentStepIndex) => {
+      steps[currentStepIndex].classList.remove('active');
+      steps[currentStepIndex - 1].classList.add('active');
+      
+      // Update progress indicator
+      progressDots[currentStepIndex].classList.remove('active');
+      progressDots[currentStepIndex - 1].classList.add('active');
+    };
+    
+    // Setup next button click handlers
+    nextButtons.forEach((button, index) => {
+      button.addEventListener('click', () => {
+        goToNextStep(index);
+      });
+    });
+    
+    // Setup previous button click handlers
+    prevButtons.forEach((button, index) => {
+      button.addEventListener('click', () => {
+        // The actual step index for prev buttons is +1 because they're in steps 2 and 3
+        goToPrevStep(index + 1);
+      });
+    });
+    
+    // Add toggle password functionality
+    addPasswordToggles();
+    
+    // Add required field asterisks
+    addRequiredAsterisks();
+    
+    // Form toggle (sign in / register)
+    const toggleForm = document.getElementById('toggle-form');
+    if (toggleForm) {
+      toggleForm.addEventListener('click', function(e) {
+        e.preventDefault();
+        const container = document.querySelector('.container');
+        const h1 = container.querySelector('h1');
+        
+        if (h1.textContent === 'Create Your Account') {
+          h1.textContent = 'Sign In';
+          this.textContent = 'Create account';
+          // Create and show login form
+          // This is a placeholder for additional functionality
+        } else {
+          h1.textContent = 'Create Your Account';
+          this.textContent = 'Sign in';
+          // Show registration form
+          // This is a placeholder for additional functionality
+        }
+      });
+    }
+    
+    // Handle form submission
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Validate final step
+      if (!validateStep(steps.length - 1)) {
+        return;
+      }
+      
+      // Here you would normally submit the form or handle AJAX submission
+      console.log('Form submitted successfully!');
+      
+      // You can add a success message or redirect here
+      alert('Account created successfully!');
+    });
+  });
