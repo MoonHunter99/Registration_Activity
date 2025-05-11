@@ -11,7 +11,7 @@
   <div class="container" id="login-form">
     <h1>Sign In</h1>
     
-    <form id="login-form-element" action="login.php" method="POST">
+    <form id="login-form-element" action="register.php" method="POST">
       <label for="login-username">Username</label>
       <input type="text" name="username" id="login-username" placeholder="Your username" required />
 
@@ -22,7 +22,7 @@
 
 
 
-      <button type="submit">Sign In</button>
+      <button type="submit" value="Sign In" name="signIn">Sign In</button>
     </form>
     <p>Don't have an account? <a href="#" id="show-register">Create an Account</a></p>
   </div>
@@ -108,7 +108,7 @@
 
         <div class="btn-group">
           <button type="button" class="prev-btn">Back</button>
-          <button type="submit">Create Account</button>
+          <button type="submit" name="signUp" value="Sign Up">Create Account</button>
         </div>
       </fieldset>
     </form>

@@ -636,39 +636,3 @@ document.addEventListener('DOMContentLoaded', function() {
       });
   }
 });
-
-function checkPasswordStrength(password) {
-    const minLength = 8;
-    const hasLowercase = /[a-z]/.test(password);
-    const hasUppercase = /[A-Z]/.test(password);
-    const hasNumber = /\d/.test(password);
-    const hasSpecial = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password);
-    
-    let strength = 0;
-    let feedback = [];
-    
-    if (password.length >= minLength) {
-        strength++;
-    } else {
-        feedback.push("At least 8 characters");
-    }
-    
-    if (hasLowercase) strength++;
-    else feedback.push("At least one lowercase letter");
-    
-    if (hasUppercase) strength++;
-    else feedback.push("At least one uppercase letter");
-    
-    if (hasNumber) strength++;
-    else feedback.push("At least one number");
-    
-    if (hasSpecial) strength++;
-    else feedback.push("At least one special character");
-    
-    // Return results
-    return {
-        valid: strength === 5,
-        strength: strength, // 0-5 scale
-        feedback: feedback.join(", ")
-    };
-}
